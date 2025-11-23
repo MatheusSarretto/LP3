@@ -9,6 +9,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -48,4 +50,14 @@ public class Usuario {
     @Column(name = "data_atualizacao")
     private Instant dataAtualizacao;
     
+    @PrePersist
+    protected void onCreate() {
+        dataCriacao = Instant.now();
+        dataAtualizacao = Instant.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        dataAtualizacao = Instant.now();
+    }
 }

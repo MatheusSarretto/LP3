@@ -50,6 +50,15 @@ public class GestaoNotasService {
         
         return matriculaRepository.findByTurmaId(turmaId);
     }
+    
+    @Transactional
+    public void updateFrequencia(Integer matriculaId, BigDecimal frequencia, String professorEmail) {
+        Matricula matricula = findMatriculaById(matriculaId);
+        checkProfessorAccess(matricula.getTurma().getId(), professorEmail);
+        
+        matricula.setFrequencia(frequencia);
+        matriculaRepository.save(matricula);
+    }
 
     // LÓGICA DE NOTAS
     @Transactional(readOnly = true)

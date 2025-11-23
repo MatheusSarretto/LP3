@@ -37,6 +37,9 @@ public class GestaoAcademicaService {
 
     @Autowired
     private MatriculaRepository matriculaRepository;
+    
+    @Autowired
+    private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
     // LÓGICA DE DISCIPLINAS
     @Transactional(readOnly = true)
@@ -189,6 +192,39 @@ public class GestaoAcademicaService {
         Matricula matricula = findMatriculaById(id);
 
         matriculaRepository.delete(matricula);
+    }
+    
+    // LÓGICA DE USUÁRIOS
+    @Transactional(readOnly = true)
+    public List<Usuario> findAllUsuarios() {
+        return usuarioRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public Usuario findUsuarioById(Integer id) {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com ID: " + id));
+    }
+
+    @Transactional
+    public Usuario updateUsuario(Integer id, com.ifsp.dto.UsuarioRequest request) {
+        Usuario usuario = findUsuarioById(id);
+        
+        usuario.setNome(request.getNome());
+        usuario.setEmail(request.getEmail());
+        usuario.setRole(request.getRole());
+        
+        if (request.getSenha() != null && !request.getSenha().isBlank()) {
+            usuario.setSenha(passwordEncoder.encode(request.getSenha()));
+        }
+
+        return usuarioRepository.save(usuario);
+    }
+
+    @Transactional
+    public void deleteUsuario(Integer id) {
+        Usuario usuario = findUsuarioById(id);
+        usuarioRepository.delete(usuario);
     }
     
 }

@@ -3,8 +3,8 @@ use ifsp_db;
 
 create table usuarios (
     id int auto_increment primary key,
-    nome varchar(255) not null,
-    email varchar(255) not null unique,
+    nome varchar(100) not null,
+    email varchar(100) not null unique,
     senha varchar(255) not null,
     role enum('aluno', 'professor', 'administrador') not null,
     data_criacao timestamp default current_timestamp,
@@ -13,8 +13,8 @@ create table usuarios (
 
 create table disciplinas (
     id int auto_increment primary key,
-    nome varchar(255) not null,
-    codigo_disciplina varchar(50) not null unique,
+    nome varchar(100) not null,
+    codigo_disciplina varchar(20) not null unique,
     descricao text null,
     carga_horaria int null,
     data_criacao timestamp default current_timestamp,
@@ -25,9 +25,9 @@ create table turmas (
     id int auto_increment primary key,
     disciplina_id int not null,
     professor_id int not null,
-    periodo varchar(50) not null,
-    horario varchar(100) null,
-    local_sala varchar(100) null,
+    periodo varchar(20) not null,
+    horario varchar(20) null,
+    local_sala varchar(40) null,
     data_criacao timestamp default current_timestamp,
     data_atualizacao timestamp default current_timestamp on update current_timestamp,
     foreign key (disciplina_id) references disciplinas(id) on delete restrict,
@@ -51,7 +51,7 @@ create table matriculas (
 create table notas (
     id int auto_increment primary key,
     matricula_id int not null,
-    descricao varchar(255) not null,
+    descricao varchar(100) not null,
     valor_nota decimal(5, 2) not null,
     peso decimal(3, 2) not null default 1.00,
     data_avaliacao date null,

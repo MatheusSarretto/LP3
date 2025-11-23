@@ -27,6 +27,7 @@ import com.ifsp.dto.TurmaResponse;
 import com.ifsp.model.Disciplina;
 import com.ifsp.model.Matricula;
 import com.ifsp.model.Turma;
+import com.ifsp.model.Usuario;
 import com.ifsp.service.GestaoAcademicaService;
 
 import jakarta.validation.Valid;
@@ -157,6 +158,36 @@ public class AdminController {
     @DeleteMapping("/matriculas/{id}")
     public ResponseEntity<Void> deleteMatricula(@PathVariable Integer id) {
         gestaoService.deleteMatricula(id);
+        return ResponseEntity.noContent().build();
+    }
+    
+    // ENDPOINTS DE USUÁRIOS
+    @GetMapping("/usuarios")
+    public ResponseEntity<List<com.ifsp.dto.UsuarioResponse>> getAllUsuarios() {
+        List<com.ifsp.dto.UsuarioResponse> response = gestaoService.findAllUsuarios().stream()
+                .map(com.ifsp.dto.UsuarioResponse::fromEntity)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/usuarios/{id}")
+    public ResponseEntity<com.ifsp.dto.UsuarioResponse> getUsuarioById(@PathVariable Integer id) {
+        Usuario usuario = gestaoService.findUsuarioById(id);
+        return ResponseEntity.ok(com.ifsp.dto.UsuarioResponse.fromEntity(usuario));
+    }
+
+    @PutMapping("/usuarios/{id}")
+    public ResponseEntity<com.ifsp.dto.UsuarioResponse> updateUsuario(
+            @PathVariable Integer id, 
+            @RequestBody com.ifsp.dto.UsuarioRequest request 
+    ) {
+        Usuario usuarioAtualizado = gestaoService.updateUsuario(id, request);
+        return ResponseEntity.ok(com.ifsp.dto.UsuarioResponse.fromEntity(usuarioAtualizado));
+    }
+
+    @DeleteMapping("/usuarios/{id}")
+    public ResponseEntity<Void> deleteUsuario(@PathVariable Integer id) {
+        gestaoService.deleteUsuario(id);
         return ResponseEntity.noContent().build();
     }
 	
