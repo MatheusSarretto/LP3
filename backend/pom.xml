@@ -135,6 +135,7 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+					<mainClass>com.ifsp.IfspApplication</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
